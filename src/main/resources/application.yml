@@ -1,0 +1,46 @@
+#激活指定环境的配置文件
+spring:
+  profiles:
+    active: dev
+    
+server:
+  context-path: /
+
+mybatis:
+  type-aliases-package: com.smallfat.demo.springboot.model        #mybatis 对应的 model
+  mapper-locations: classpath*:mapping/*.xml  #mybatis 对应的 mapping.xml 文件
+  
+endpoints:
+  shutdown:
+    enabled: true   #启用shutdown
+    sensitive: true  #开启shutdown的安全验证
+  mappings:
+    enabled: true
+    sensitive: true
+  autoconfig: #查看自动配置的使用情况
+    enabled: true
+    sensitive: true
+  configprops: #查看配置属性，包括默认配置
+    enabled: true
+    sensitive: true
+  beans: #查看bean及其关系列表
+    enabled: true
+    sensitive: true
+  dump: #打印线程栈
+    enabled: true
+    sensitive: true
+  env: #查看所有环境变量
+    enabled: true
+    sensitive: true
+  health:  #查看应用健康指标
+    enabled: true
+    sensitive: true
+  info:  #查看应用信息
+    enabled: true
+    sensitive: true
+  metrics:  #查看应用基本指标
+    enabled: true
+    sensitive: true
+  trace:  #查看基本追踪信息
+    enabled: true
+    sensitive: true

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<!-- 定义参数 -->
+	<springProperty name="log.lever" source="log.lever"/>
+	<springProperty name="log.filePath" source="log.filePath"/>
+	<property name="log.maxHistory" value="365" />
+	<property name="log.pattern" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+	<!--开发环境 -->
+	<springProfile name="dev">
+		<!-- 将日志打印到控制台 -->
+		<appender name="CONSOLE"
+			class="ch.qos.logback.core.ConsoleAppender">
+			<encoder>
+				<Pattern>${log.pattern}</Pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</appender>
+		<!--myibatis log configure--> 
+		<logger name="com.smallfat.demo.springboot.mapper" level="DEBUG"/>
+		<root level="${log.lever}">
+			<appender-ref ref="CONSOLE"></appender-ref>
+		</root>
+	</springProfile>
+
+	<!--测试环境 -->
+	<!--生产环境 -->
+	<springProfile name="test,prd">
+		<!-- info -->
+		<appender name="infoAppender"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${log.filePath}/info.log</file>
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- daily rollover 保存历史记录到这个文件夹一日起为后缀 -->
+				<fileNamePattern>${log.filePath}/info.%d{yyyy-MM-dd}.log
+				</fileNamePattern>
+				<!-- 文件最大保存历史数量 -->
+				<MaxHistory>${log.maxHistory}</MaxHistory>
+			</rollingPolicy>
+			<encoder>
+				<Pattern>${log.pattern}</Pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</appender>
+		<!-- error -->
+		<appender name="errorAppender"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${log.filePath}/error.log</file>
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- daily rollover 保存历史记录到这个文件夹一日起为后缀 -->
+				<fileNamePattern>${log.filePath}/error.%d{yyyy-MM-dd}.log
+				</fileNamePattern>
+				<!-- 文件最大保存历史数量 -->
+				<MaxHistory>${log.maxHistory}</MaxHistory>
+			</rollingPolicy>
+			<encoder>
+				<Pattern>${log.pattern}</Pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>ERROR</level>
+			</filter>
+		</appender>
+		<root level="${log.lever}">
+			<appender-ref ref="infoAppender"></appender-ref>
+			<appender-ref ref="errorAppender"></appender-ref>
+		</root>
+	</springProfile>
+</configuration>  
